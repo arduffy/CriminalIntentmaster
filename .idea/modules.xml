@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/CriminalIntentmaster.iml" filepath="$PROJECT_DIR$/CriminalIntentmaster.iml" />
       <module fileurl="file://C:\cidm4385\CriminalIntentmaster\CriminalIntentmaster.iml" filepath="C:\cidm4385\CriminalIntentmaster\CriminalIntentmaster.iml" />
+      <module fileurl="file://C:\Users\Amanda\Documents\CIDM-4385\CriminalIntentmaster3\CriminalIntentmaster.iml" filepath="C:\Users\Amanda\Documents\CIDM-4385\CriminalIntentmaster3\CriminalIntentmaster.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CriminalIntentmaster3.iml" filepath="$PROJECT_DIR$/CriminalIntentmaster3.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://C:\cidm4385\CriminalIntentmaster\app\app.iml" filepath="C:\cidm4385\CriminalIntentmaster\app\app.iml" />
     </modules>
