@@ -15,19 +15,23 @@ import android.widget.Toast;
 import java.util.List;
 
 public class CrimeListFragment extends Fragment {
+    private int clickedCrimePosition;
+    private static final String CLICKED_CRIME_POSITION_ID = "clicked_crime_position_id";
+
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
 
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_crime_list, container, false);
 
-        mCrimeRecyclerView = (RecyclerView) view
-                .findViewById(R.id.crime_recycler_view);
+        mCrimeRecyclerView = (RecyclerView) view.findViewById(R.id.crime_recycler_view);
         mCrimeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        updateUI();
+        if (savedInstanceState != null) {
+            clickedCrimePosition = savedInstanceState.getInt(CLICKED_CRIME_POSITION_ID);
+        }
 
         return view;
     }
@@ -46,18 +50,15 @@ public class CrimeListFragment extends Fragment {
             mAdapter = new CrimeAdapter(crimes);
             mCrimeRecyclerView.setAdapter(mAdapter);
         } else {
-            mAdapter.notifyDataSetChanged();
+            mAdapter.notifyItemChanged(clickedCrimePosition);
         }
     }
 
-    private class CrimeHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener {
-
-        private Crime mCrime;
-
+    private class CrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView mTitleTextView;
         private TextView mDateTextView;
         private ImageView mSolvedImageView;
+        private Crime mCrime;
 
         public CrimeHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_crime, parent, false));
@@ -76,14 +77,14 @@ public class CrimeListFragment extends Fragment {
         }
 
         @Override
-        public void onClick(View view) {
+        public void onClick(View v) {
+            clickedCrimePosition = getAdapterPosition();
             Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
             startActivity(intent);
         }
     }
 
     private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
-
         private List<Crime> mCrimes;
 
         public CrimeAdapter(List<Crime> crimes) {
@@ -106,5 +107,11 @@ public class CrimeListFragment extends Fragment {
         public int getItemCount() {
             return mCrimes.size();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle onSavedInstanceState) {
+        super.onSaveInstanceState(onSavedInstanceState);
+        onSavedInstanceState.putSerializable(CLICKED_CRIME_POSITION_ID, clickedCrimePosition);
     }
 }
