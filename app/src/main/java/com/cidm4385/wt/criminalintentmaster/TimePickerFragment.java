@@ -20,63 +20,64 @@ public class TimePickerFragment extends DialogFragment {
     public static final String EXTRA_TIME =
             "com.bignerdranch.android.criminalintent.time";
 
-    private static final String ARG_TIME = "time";
+    private TimePicker timePicker;
+    private static final String TIME = "time";
+    private Date time;
 
-    private TimePicker mTimePicker;
 
-    public static TimePickerFragment newInstance(Date time) {
-        Bundle args = new Bundle();
-        args.putSerializable(ARG_TIME, time);
 
-        TimePickerFragment fragment = new TimePickerFragment();
-        fragment.setArguments(args);
-        return fragment;
+
+    public static TimePickerFragment newInstance(Date date) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(TIME, date);
+        TimePickerFragment timePickerFragment = new TimePickerFragment();
+        timePickerFragment.setArguments(bundle);
+        return timePickerFragment;
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final Date time = (Date) getArguments().getSerializable(ARG_TIME);
 
+        time =(Date)getArguments().getSerializable(TIME);
+
+
+
+        View v  = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_time_picker,null);
+        timePicker = (TimePicker)v.findViewById(R.id.time_picker);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(time);
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
 
-        View v = LayoutInflater.from(getActivity())
-                .inflate(R.layout.dialog_time, null);
-
-        mTimePicker = (TimePicker) v.findViewById(R.id.dialog_time_picker);
-        mTimePicker.setCurrentHour(hour);
-        mTimePicker.setCurrentMinute(minute);
+        timePicker.setCurrentHour(calendar.get(Calendar.HOUR_OF_DAY));
+        timePicker.setCurrentMinute(calendar.get(Calendar.MINUTE));
 
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
-                .setTitle(R.string.time_picker_title)
+                .setTitle("Time picker")
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        int hour = mTimePicker.getCurrentHour();
-                        int minute = mTimePicker.getCurrentMinute();
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        int hour = timePicker.getCurrentHour();
+                        int min = timePicker.getCurrentMinute();
 
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTime(time);
+
                         calendar.set(Calendar.HOUR_OF_DAY, hour);
-                        calendar.set(Calendar.MINUTE, minute);
-                        Date newTime = calendar.getTime();
-                        sendResult(Activity.RESULT_OK, newTime);
+                        calendar.set(Calendar.MINUTE,min);
+
+                        Date time = calendar.getTime();
+
+                        sendIntent(Activity.RESULT_OK,time);
                     }
                 })
                 .create();
     }
 
-    private void sendResult(int resultCode, Date time) {
-        if (getTargetFragment() == null) {
-            return;
-        }
-
+    private void sendIntent(int resultCode,Date time) {
         Intent intent = new Intent();
-        intent.putExtra(EXTRA_TIME, time);
+        intent.putExtra(EXTRA_TIME,time);
+        getTargetFragment().onActivityResult(getTargetRequestCode(),resultCode,intent);
 
-        getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, intent);
     }
 }

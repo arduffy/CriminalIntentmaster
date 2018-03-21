@@ -1,5 +1,6 @@
 package com.cidm4385.wt.criminalintentmaster;
 
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -9,6 +10,9 @@ public class Crime {
     private Date mDate;
     private Date mTime;
     private boolean mSolved;
+    private DateFormat dfTime = DateFormat.getTimeInstance();
+    private DateFormat dfDay = DateFormat.getDateInstance();
+
 
     public Crime() {
         mId = UUID.randomUUID();
@@ -32,17 +36,18 @@ public class Crime {
         return mDate;
     }
 
-    public void setDate(Date date) {
-        mDate = date;
-    }
-
     public Date getTime() {
         return mTime;
     }
 
-    public void setTime(Date time) {
-        mTime = time;
+    public void setTime(Date date) {
+        mTime = date;
     }
+
+    public void setDate(Date date) {
+        mDate = date;
+    }
+
 
     public boolean isSolved() {
         return mSolved;
@@ -51,6 +56,9 @@ public class Crime {
     public void setSolved(boolean solved) {
         mSolved = solved;
     }
-}
 
+    public String getDateAndTime() {
+        return dfTime.format(mTime) + " " + dfDay.format(mDate);
+    }
+}
 
