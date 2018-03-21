@@ -12,14 +12,9 @@ import android.support.v7.app.AppCompatActivity;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Created by Amanda on 3/9/2018.
- */
-
 public class CrimePagerActivity extends AppCompatActivity {
-
     private static final String EXTRA_CRIME_ID =
-            "com.cidm4385.wt.criminalintentmaster.crime_id";
+            "com.bignerdranch.android.criminalintent.crime_id";
 
     private ViewPager mViewPager;
     private List<Crime> mCrimes;
@@ -29,21 +24,17 @@ public class CrimePagerActivity extends AppCompatActivity {
         intent.putExtra(EXTRA_CRIME_ID, crimeId);
         return intent;
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crime_pager);
 
-        UUID crimeId = (UUID) getIntent()
-                .getSerializableExtra(EXTRA_CRIME_ID);
+        UUID crimeId = (UUID) getIntent().getSerializableExtra(EXTRA_CRIME_ID);
 
         mViewPager = (ViewPager) findViewById(R.id.crime_view_pager);
-
         mCrimes = CrimeLab.get(this).getCrimes();
         FragmentManager fragmentManager = getSupportFragmentManager();
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
-
             @Override
             public Fragment getItem(int position) {
                 Crime crime = mCrimes.get(position);
@@ -64,4 +55,3 @@ public class CrimePagerActivity extends AppCompatActivity {
         }
     }
 }
-
